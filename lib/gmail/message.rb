@@ -18,7 +18,11 @@ module Gmail
     def uid
       @uid ||= @gmail.conn.uid_search(['HEADER', 'Message-ID', message_id])[0]
     end
-    
+
+    def thr_id
+      @gmail.conn.uid_fetch(uid, "X-GM-THRID")[0].attr["X-GM-THRID"]
+    end
+
     # Mark message with given flag.
     def flag(name)
       !!@gmail.mailbox(@mailbox.name) { @gmail.conn.uid_store(uid, "+FLAGS", [name]) }
